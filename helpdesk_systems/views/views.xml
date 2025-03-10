@@ -1,0 +1,190 @@
+<odoo>
+  <data>
+    <!-- List View -->
+    <record id="helpdesk_systems_view_helpdesk_systems_list" model="ir.ui.view">
+      <field name="name">helpdesk_systems.list</field>
+      <field name="model">helpdesk_systems.helpdesk_systems</field>
+      <field name="arch" type="xml">
+        <list>
+          <field name="name"/>
+          <field name="query"/>
+          <field name="reported_date"/>
+          <field name="reported_by"/>
+          <!-- <field name="stage_id"/> -->
+
+          <field name="team_id"/>
+          <field name="category_id" widget="many2one" options="{'no_create': True}"/>
+
+
+          <field name="tags" widget="many2many_tags"/>
+
+          <field name="type"/>
+        </list>
+      </field>
+    </record>
+
+
+    <!-- Form View -->
+    <record id="helpdesk_systems_view_helpdesk_systems_form" model="ir.ui.view">
+      <field name="name">helpdesk_systems.form</field>
+      <field name="model">helpdesk_systems.helpdesk_systems</field>
+      <field name="arch" type="xml">
+        <form string="Helpdesk System">
+          <header>
+            <!-- Button to send to In Progress -->
+
+
+            <button name="action_open_stage_wizard" type="object" string="Send to In Progress" class="btn-primary" invisible="not is_draft"/>
+            <!-- Button to send to Completed -->
+            <button name="action_open_stage_wizard" type="object" string="Send to Completed" class="btn-primary" invisible="not is_progress"/>
+            <!-- Button to send to Cancelled -->
+            <button name="action_send_to_cancel" type="object" string="Send to Cancelled" class="btn-danger" invisible="is_cancelled"/>
+            <button name="action_restore_ticket" string="Restore" type="object" class="btn-secondary" invisible="not is_cancelled"/>
+
+
+            <field name="stage_id" widget="statusbar" options="{'clickable': False}"/>
+          </header>
+          <sheet>
+            <group>
+              <group>
+                <field name="name"/>
+                <field name="description"/>
+                <field name="query"/>
+                <field name="type"/>
+                <field name="email"/>
+                <field name="number"/>
+
+                <field name="tags" widget="many2many_tags"/>
+
+              </group>
+              <group>
+                <field name="category_id" options="{'no_create':True,'no_create_edit':True}"/>
+
+                <field name="reported_date"/>
+                <field name="reported_by" options="{'no_create':True,'no_create_edit':True}"/>
+                <field name="team_id" options="{'no_create':True,'no_create_edit':True}"/>
+                <field name="assigned_user_id" domain="[('id', 'in', available_members)]" options="{'no_create':True,'no_create_edit':True}"/>
+
+
+              </group>
+            </group>
+          </sheet>
+          <notebook>
+            <page string="Remarks" name="help_desk_remarks">
+              <field name="remarks_ids" readonly="1">
+                <list string="Remarks" editable="bottom">
+                  <field name="remarks"/>
+                  <field name="document"/>
+                </list>
+              </field>
+            </page>
+          </notebook>
+
+
+
+          <chatter reload_on_post="True" />
+
+        </form>
+      </field>
+    </record>
+
+    <!-- Kanban View for Helpdesk System -->
+    <record id="helpdesk_systems_view_helpdesk_systems_kanban" model="ir.ui.view">
+      <field name="name">helpdesk_systems.kanban</field>
+      <field name="model">helpdesk_systems.helpdesk_systems</field>
+      <field name="arch" type="xml">
+        <kanban class="o_kanban_view" default_group_by="stage_id" sample="1"
+        groups_draggable="False" records_draggable="False"> 
+          <field name="stage_id"/>
+
+          <templates>
+            <t t-name="card">
+              <div class="d-flex justify-content-between">
+                <!-- Left side: Ticket Information -->
+                <div>
+                  <!-- Displaying Ticket Name -->
+                  <field name="name" class="fw-bold fs-5"/>
+                  <br />
+
+                  <!-- Displaying Query (Description of the Ticket) -->
+                  <field name="query"/>
+                  <!-- Displaying Tags associated with the ticket -->
+                  <field name="tags" widget="many2many_tags"/>
+                  <!-- Displaying Category -->
+                  <field name="category_id"/>
+                  <!-- Line Break for spacing -->
+                  <br />
+                  <field name="reported_date"/>
+
+                  <!-- Displaying Stage -->
+                </div>
+                <!-- Right side: User Avatar and Team -->
+                <div class="ms-auto">
+                  <!-- Displaying Assigned User Avatar (Profile Picture) -->
+                  <field name="assigned_user_id" widget="many2one_avatar_user" domain="[('share', '=', False)]"/>
+                  <!-- Displaying Team -->
+                  <field name="team_id"/>
+
+                </div>
+              </div>
+            </t>
+          </templates>
+        </kanban>
+      </field>
+    </record>
+    <!-- Calendar View -->
+    <record id="helpdesk_systems_view_helpdesk_systems_calendar" model="ir.ui.view">
+      <field name="name">helpdesk_systems.calendar</field>
+      <field name="model">helpdesk_systems.helpdesk_systems</field>
+      <field name="arch" type="xml">
+        <calendar date_start="reported_date" color="team_id">
+          <field name="name"/>
+          <field name="reported_by"/>
+          <field name="category_id"/>
+        </calendar>
+      </field>
+    </record>
+
+    <record id="helpdesk_systems_view_helpdesk_systems_pivot" model="ir.ui.view">
+  <field name="name">helpdesk_systems.pivot</field>
+  <field name="model">helpdesk_systems.helpdesk_systems</field>
+  <field name="arch" type="xml">
+    <pivot>
+      <field name="category_id" type="row"/>
+      <field name="team_id" type="row"/>
+      <field name="reported_by" type="col"/>
+      <field name="stage_id" type="col"/>
+    </pivot>
+  </field>
+</record>
+
+
+    <!-- Graph View -->
+    <record id="helpdesk_systems_view_helpdesk_systems_graph" model="ir.ui.view">
+      <field name="name">helpdesk_systems.graph</field>
+      <field name="model">helpdesk_systems.helpdesk_systems</field>
+      <field name="arch" type="xml">
+        <graph type="bar">
+          <field name="team_id" type="row"/>
+          <field name="category_id" type="col"/>
+          <field name="stage_id" type="row"/>
+          <field name="id" type="measure"/>
+        </graph>
+      </field>
+    </record>
+
+    <!-- Action to Open Helpdesk System -->
+    <record id="helpdesk_systems_action_helpdesk_systems" model="ir.actions.act_window">
+      <field name="name">Helpdesk System</field>
+      <field name="res_model">helpdesk_systems.helpdesk_systems</field>
+      <field name="view_mode">list,form,kanban,calendar,pivot,graph</field>
+      <field name="help" type="html">
+        <p class="oe_view_nocontent_create">
+          Click to create a new helpdesk ticket.
+        </p>
+      </field>
+    </record>
+
+
+  </data>
+</odoo>

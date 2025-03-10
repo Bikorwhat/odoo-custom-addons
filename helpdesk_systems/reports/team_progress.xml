@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="helpdesk_team_progress_report_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Team Progress Report</h2>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Team</th>
+                                    <th>Team Leader</th>
+                                    <th>Total Tickets</th>
+                                    <th>Draft Tickets</th>
+                                    <th>In Progress Tickets</th>
+                                    <th>Completed Tickets</th>
+                                    <th>Cancelled Tickets</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                             <t t-foreach="doc.get_team_progress_data()" t-as="team">
+                                    <tr>
+                                        <td>
+                                            <span t-esc="team['name']"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="team['leader_id'].name if team['leader_id'] else ''"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="team['total_tickets']"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="team['draft_tickets']"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="team['in_progress_tickets']"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="team['completed_tickets']"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="team['cancelled_tickets']"/>
+                                        </td>
+                                    </tr>
+                                </t>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- Form View for Helpdesk Tags -->
+    <record id="helpdesk_systems_tag_view_form" model="ir.ui.view">
+        <field name="name">helpdesk_systems.tag.view.form</field>
+        <field name="model">helpdesk_systems.tag</field>
+        <field name="arch" type="xml">
+            <form string="Helpdesk Tags">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. Urgent, Software Issue, Hardware Issue"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="color" widget="color_picker"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- List View for Helpdesk Tags -->
+    <record id="helpdesk_systems_tag_view_tree" model="ir.ui.view">
+        <field name="name">helpdesk_systems.tag.view.list</field>
+        <field name="model">helpdesk_systems.tag</field>
+        <field name="arch" type="xml">
+            <list string="Helpdesk Tags" editable="bottom">
+                <field name="name"/>
+                <field name="color" widget="color_picker"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Action to Open Helpdesk Tags -->
+    <record id="helpdesk_systems_tag_action" model="ir.actions.act_window">
+        <field name="name">Helpdesk Tags</field>
+        <field name="res_model">helpdesk_systems.tag</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="helpdesk_systems_tag_view_tree"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create and manage Helpdesk Tags.
+            </p>
+            <p>
+                Use tags to categorize and track different types of helpdesk queries.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Item to Access Helpdesk Tags -->
+   </odoo>

@@ -1,0 +1,27 @@
+<odoo>
+<record id="view_crm_wizard_form" model="ir.ui.view">
+    <field name="name">crm.wizard.form</field>
+    <field name="model">helpdesk_bridge.crm_wizard</field>
+    <field name="arch" type="xml">
+        <form string="Create CRM Lead">
+            <sheet>
+                <group>
+                    <field name="name" required="1"/>
+                    <field name="email" readonly="1"/>
+                    <field name="phone" readonly="1"/>
+                </group>
+            </sheet>
+            <footer>
+                <button string="Create" class="btn-primary" type="object" name="action_confirm_crm_lead"/>
+                <button string="Cancel" class="btn-secondary" special="cancel"/>
+            </footer>
+        </form>
+    </field>
+</record>
+<record id="action_crm_wizard" model="ir.actions.act_window">
+    <field name="name">Create CRM Lead</field>
+    <field name="res_model">helpdesk_bridge.crm_wizard</field>
+    <field name="view_mode">form</field>
+    <field name="target">new</field>
+</record>
+</odoo>

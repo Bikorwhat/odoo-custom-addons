@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+helpdesk_bridge.access_todo_wizard,access_todo_wizard,helpdesk_bridge.model_todo_wizard,base.group_user,1,1,1,1
+helpdesk_bridge.access_helpdesk_bridge_crm_wizard,access_helpdesk_bridge_crm_wizard,helpdesk_bridge.model_helpdesk_bridge_crm_wizard,base.group_user,1,1,1,1

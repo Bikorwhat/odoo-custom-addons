@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <!-- Helpdesk Groups -->
+    <data noupdate='0'>
+        <!-- Main Helpdesk Category -->
+        <record id="category_helpdesk_main" model="ir.module.category">
+            <field name="name">Helpdesk</field>
+            <field name="description">Main category for helpdesk system App</field>
+            <field name="sequence">1</field>
+        </record>
+
+        <!-- Helpdesk Systems Roles Category -->
+        <record id="category_helpdesk_systems_roles" model="ir.module.category">
+            <field name="description">Manage and track tickets in Helpdesk.</field>
+            <field name="sequence">1</field>
+            <field name="name">Helpdesk</field>
+            <field name="parent_id" ref="category_helpdesk_main" />
+        </record>
+
+        <!-- Helpdesk Member: Access to Own Tickets Only -->
+        <record id="group_helpdesk_member" model="res.groups">
+            <field name="name">Member: Own Ticket Only</field>
+            <field name="category_id" ref="category_helpdesk_systems_roles" />
+            <field name="implied_ids" eval="[(4, ref('helpdesk_systems.group_helpdesk_member'))]" />
+            <field name="comment">The member will have access to their own tickets in the Helpdesk application.</field>
+        </record>
+
+        <!-- Helpdesk Leader: Access to All Team's Tickets -->
+        <record id="group_helpdesk_leader" model="res.groups">
+            <field name="name">Leader: All Team Documents</field>
+            <field name="category_id" ref="category_helpdesk_systems_roles" />
+            <field name="implied_ids" eval="[(4, ref('group_helpdesk_member'))]" />
+            <field name="comment">The leader will have access to all records for their team in the Helpdesk application.</field>
+        </record>
+
+        <!-- Helpdesk Admin: Full Access to Everything -->
+        <record id="group_helpdesk_admin" model="res.groups">
+            <field name="name">Administrator</field>
+            <field name="comment">The admin will have full access to everything in the Helpdesk application.</field>
+            <field name="category_id" ref="category_helpdesk_systems_roles" />
+            <field name="implied_ids" eval="[(4, ref('group_helpdesk_leader'))]" />
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]" />
+        </record>
+    </data>
+
+    <!-- Helpdesk Record Rules -->
+    <data noupdate="0">
+        <!-- Member: Own Ticket Only -->
+        <record id="helpdesk_systems_member_ticket" model="ir.rule">
+            <field name="name">Own Ticket</field>
+            <field name="model_id" ref="model_helpdesk_systems_helpdesk_systems" />
+            <field name="domain_force">[('assigned_user_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('helpdesk_systems.group_helpdesk_member'))]" />
+            <field name="perm_create" eval="False" />
+            <field name="perm_unlink" eval="False" />
+            <field name="perm_read" eval="True" />
+            <field name="perm_write" eval="False" />
+        </record>
+
+        <!-- Leader: All Team Tickets -->
+        <record id="helpdesk_systems_team_tickets" model="ir.rule">
+            <field name="name">Helpdesk Team Tickets</field>
+            <field name="model_id" ref="model_helpdesk_systems_helpdesk_systems" />
+            <field name="domain_force">[ '|',
+        ('team_id.leader_id', '=', user.id),             
+        ('team_id', 'in', user.team_ids.ids)]</field>
+            <field name="groups" eval="[(4, ref('group_helpdesk_leader'))]" />
+            <field name="perm_create" eval="True" />
+            <field name="perm_unlink" eval="False" />
+            <field name="perm_read" eval="True" />
+            <field name="perm_write" eval="True" />
+        </record>
+
+        <!-- Admin: Full Access to All Tickets -->
+        <record id="helpdesk_systems_admin_tickets" model="ir.rule">
+            <field name="name">All Helpdesk Tickets</field>
+            <field name="model_id" ref="model_helpdesk_systems_helpdesk_systems" />
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('helpdesk_systems.group_helpdesk_admin'))]" />
+            <field name="perm_create" eval="True" />
+            <field name="perm_unlink" eval="True" />
+            <field name="perm_read" eval="True" />
+            <field name="perm_write" eval="True" />
+        </record>
+    </data>
+</odoo>

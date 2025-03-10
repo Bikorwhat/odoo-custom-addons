@@ -1,0 +1,65 @@
+<odoo>
+    <menuitem
+        id="menu_todo_app"
+        name="Todo App"
+        sequence="25" />
+    <menuitem
+        id="submenu_todo_list"
+        name="TODO"
+        parent="menu_todo_app"
+        sequence="1" />
+    <menuitem
+        id="submenu_todo_menu_list"
+        name="Todo"
+        parent="submenu_todo_list"
+        action="todo_app.todo_app_action_todo"
+        sequence="2"
+        groups="todo_app.group_todo_manager,todo_app.group_todo_admin,base.group_system,base.group_erp_manager" />
+    <menuitem
+        id="submenu_complete_todo_menu_list"
+        name="Complete Todo"
+        parent="submenu_todo_list"
+        action="todo_app.todo_app_action_todo_complete"
+        sequence="3" />
+    <menuitem
+        id="submenu_incomplete_todo_menu_list"
+        name="Incomplete Todo"
+        parent="submenu_todo_list"
+        action="todo_app.todo_app_action_todo_incomplete"
+        sequence="4" />
+    <menuitem
+        id="submenu_todo_task_list"
+        name="Todo Task"
+        parent="submenu_todo_list"
+        action="todo_app.todo_app_action_task"
+        sequence="5" />
+    <menuitem
+        id="submenu_configuration_list"
+        name="Configuration"
+        parent="menu_todo_app"
+        sequence="30" />
+    <menuitem
+        id="submenu_todo_tag_list"
+        name="Tags"
+        parent="submenu_configuration_list"
+        action="todo_app.todo_app_tag_action"
+        sequence="2" />
+    <menuitem
+        id="submenu_todo_category"
+        name="Category"
+        parent="submenu_configuration_list"
+        action="todo_app.todo_app_action_todo_category"
+        sequence="3" />
+    <menuitem
+        id="submenu_todo_stage"
+        name="Stage"
+        parent="submenu_configuration_list"
+        action="todo_app.todo_app_stage_action"
+        sequence="4" />
+    <menuitem
+        id="submenu_todo_template"
+        name="Templates"
+        parent="submenu_configuration_list"
+        action="todo_app.todo_template_action_todo"
+        sequence="5" />
+</odoo>

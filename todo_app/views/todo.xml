@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="todo_app_todo_view_list" model="ir.ui.view">
+        <field name="name">todo_app.todo_app.view.list</field>
+        <field name="model">todo_app.todo_app</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+                <field name="date_deadline" />
+                <field name="user_id" string="Assigned To" />
+                <field name="progress" />
+                <field name="is_complete" optional="1" />
+                <field name="progress" optional="1" />
+                <field name="total_tasks" optional="1" />
+                <field name="short_description" optional="1" />
+                <field name="states" optional="1" />
+            </list>
+        </field>
+    </record>
+
+    <record id="quick_create_kanban_form" model="ir.ui.view">
+        <field name="name">todo_app.form.quick_create</field>
+        <field name="model">todo_app.todo_app</field>
+        <field name="priority">1000</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="name" />
+                    <field name="description" />
+                    <field name="date_deadline" />
+                    <field name="category_id" />
+
+                    <div>
+                        <div class="o_row">
+                            <field name="user_id" class="oe_inline me-5 o_field_highlight" />
+                        </div>
+                        <div class="o_row">
+                            <field name="tag_ids" class="oe_inline o_field_highlight" />
+                        </div>
+                    </div>
+                    <field name="sequence" invisible="1" />
+                    <field name="description_html" invisible="1" />
+                    <field name="active" invisible="1" />
+                    <field name="is_complete" invisible="1" />
+                    <field name="progress" invisible="1" />
+                    <field name="total_tasks" invisible="1" />
+                    <field name="short_description" invisible="1" />
+                    <field name="states" invisible="1" />
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="todo_app_todo_view_kanban" model="ir.ui.view">
+        <field name="name">todo_app.todo_app.view.kanban</field>
+        <field name="model">todo_app.todo_app</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_view" default_group_by="stage_id" on_create="quick_create" quick_create_view="todo_app.quick_create_kanban_form" sample="1">
+                <field name="name" />
+                <field name="stage_id" />
+                <field name="user_id" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <t t-name="menu">
+                                <t t-if="widget.editable">
+                                    <a role="menuitem" type="open" class="dropdown-item">Edit</a>
+                                </t>
+                                <t t-if="widget.deletable">
+                                    <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                                </t>
+                            </t>
+
+                            <t t-name="card">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                    <strong style="font-size: 20px; font-weight: bold; color: #333; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
+                                        <field name="name" />
+                                    </strong>
+                                    <field name="stage_id" />
+                                </div>
+
+                                <div style="margin: 10px 0; font-size: 15px; color: #555;">
+                                    <span style="font-weight: 600; color: #0056b3;"> Category: <field name="category_id" />
+                                    </span>
+                                    <div style="font-style: italic; color: #555;">
+                                        <field name="short_description" />
+                                    </div>
+                                </div>
+
+                                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 15px; color: #888; margin-top: 5px;">
+                                    <span style="font-weight: 1000;"> Total Tasks: <field name='total_tasks' />
+                                    </span>
+                                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
+                                </div>
+
+                                <div style="margin-top: 10px;">
+                                    <field name="progress" widget="progressbar" />
+                                </div>
+                                <footer style="font-size: 15px; color: #333; display: flex; justify-content: flex-end; padding-top: 10px;">
+                                    <field name="date_deadline" />
+                                    <field name="user_id" widget="many2one_avatar_user" domain="[('share', '=', False)]" class="ms-auto" />
+                                </footer>
+                            </t>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="todo_app_todo_view_calendar" model="ir.ui.view">
+        <field name="name">todo_app.todo_app.view.calendar</field>
+        <field name="model">todo_app.todo_app</field>
+        <field name="arch" type="xml">
+
+            <calendar create="0" mode="month" date_start="date_deadline" hide_time="true" event_limit="5">
+                <field name="name" />
+                <field name="date_deadline" />
+                <field name="user_id" />
+            </calendar>
+        </field>
+    </record>
+
+    <record id="todo_app_todo_view_pivot" model="ir.ui.view">
+        <field name="name">todo_app.todo_app.view.pivot</field>
+        <field name="model">todo_app.todo_app</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="name" type='row' />
+                <field name="total_tasks" type='measure' />
+                <field name="progress" type='measure' />
+                <field name="category_id" type='column' />
+            </pivot>
+        </field>
+    </record>
+
+    <record id="todo_app_todo_view_activity" model="ir.ui.view">
+        <field name="name">todo_app.todo_app.view.activity</field>
+        <field name="model">todo_app.todo_app</field>
+        <field name="arch" type="xml">
+            <activity string="Leads or Opportunities">
+                <field name="user_id" />
+                <templates>
+                    <div t-name="activity-box">
+                        <field name="user_id" widget="many2one_avatar_user" domain="[('share', '=', False)]" />
+                        <div class="flex-grow-1">
+                            <div class="d-flex justify-content-between">
+                                <field name="name" display="full" class="o_text_block o_text_bold" />
+                                <div class="m-1" />
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <div class="m-1" />
+                                <field name="stage_id" widget="badge" />
+                            </div>
+                        </div>
+                    </div>
+                </templates>
+            </activity>
+        </field>
+    </record>
+
+    <record id="todo_app_todo_view_graph" model="ir.ui.view">
+        <field name="name">todo_app.todo_app.view.graph</field>
+        <field name="model">todo_app.todo_app</field>
+        <field name="arch" type="xml">
+            <graph string="Todo Status Analysis">
+                <field name="date_deadline" type="date" interval="day" />
+                <field name="is_complete" type="boolean" widget="boolean" />
+                <field name="total_tasks" type="measure" />
+                <field name="progress" type="measure" />
+            </graph>
+        </field>
+    </record>
+
+
+    <record id="todo_app_todo_view_form" model="ir.ui.view">
+        <field name="name">todo_app.todo_app.view.form</field>
+        <field name="model">todo_app.todo_app</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_send_to_assigned" string="Send to Assigned" class="oe_highlight" type="object" data-hotkey="w" title="Send to Assigned" invisible="states != 'draft'" />
+                    <button name="action_send_to_in_progress" string="Send to In Progress" class="oe_highlight" type="object" data-hotkey="w" title="Send to In Progress" invisible="states != 'assigned'" />
+                    <button name="action_send_to_completed" string="Send to Completed" class="oe_highlight" type="object" data-hotkey="w" title="Send to Completed" invisible="states != 'in_progress'" />
+                    <!-- <button name="action_mark_completed" string="Mark as Completed" type="object" class="oe_highlight"/> -->
+           
+                    <button name="open_email_composer" string="Compose Email" type="object" class="btn-primary" />
+                    <button name="action_send_email" string="Send Email" type="object" class="btn-primary" />
+                    <button name="action_send_to_cancelled" string="Cancel" class="btn-secondary" type="object" data-hotkey="w" title="Send to Cancelled" invisible="states == 'cancelled'" context="{'cancelling':True}" />
+                    <!-- <button name="action_todo_completed" string="Mark as Complete" 
+                    class="btn-secondary" type="object" data-hotkey="c"
+                     title="Mark as Completed" 
+                     invisible="states == 'completed'" /> -->
+
+                    <button name="action_send_to_draft" string="Restore" class="oe_highlight" type="object" data-hotkey="w" title="Restore" invisible="states != 'cancelled'" context="{'cancelling':True}" />
+                    <field name="states" widget="statusbar" options="{'clickable': True}" />
+                </header>
+                <sheet>
+                    <field name="active" invisible="1" />
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active" />
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Some Name" readonly="states in ['completed','cancelled']" />
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="date_deadline" />
+                        <field name="category_id" />
+                        <field name="user_id" string="Assigned To" option="{'no_create':True,'no_create_edit':True}" />
+                        <field name="sequence" invisible='1' />
+                        <field name="stage_id" />
+                    </group>
+                    <group>
+                        <field name="is_complete" />
+                        <field name="progress" widget="progressbar" />
+                        <field name="description" />
+                        <field name="tag_ids" optional="hide" widget="many2many_tags" options="{'color_field': 'color'}" />
+                        <field name="template_id" option="{'no_create':True,'no_create_edit':True}" />
+                    </group>
+                    <group colspan="2">
+                        <field name='description_html' />
+                    </group>
+                    <notebook>
+                        <page string="Tasks" name="todo_tasks">
+                            <field name="task_ids" readonly="states in ['completed','canceled']">
+                                <list string="Tasks" editable="bottom">
+                                    <field name="sequence" widget="handle" />
+                                    <field name="name" />
+                                    <field name="description" />
+                                    <field name="is_completed" optional="1" />
+                                    <field name="remarks" optional="1" />
+                                    <field name="user_id" optional="1" />
+                                    <field name="todo_app_id" optional="1" />
+                                    <field name="date_deadline" optional="1" />
+                                </list>
+                                <form string="Task">
+                                    <header>
+                                        <button name="%(todo_app.action_open_remark_wizard)d" string="Task Complete" invisible="is_completed == True" type="action" class="btn-primary" />
+                                    </header>
+                                      <sheet>
+                                        <group>
+                                            <div class="oe_title">
+                                                <h1>
+                                                    <field name="name" placeholder="Task Name" />
+                                                </h1>
+                                            </div>
+                                            <group>
+                                                <field name="date_deadline" />
+                                                <field name="user_id" string="Assigned To" />
+                                                <field name="sequence" />
+                                            </group>
+                                            <group>
+                                                <field name="todo_app_id" string="Todo" />
+                                                <field name="is_completed" readonly="1" invisible="is_completed == True" />
+                                                <field name="description" />
+                                                <field name="remarks" readonly="1" invisible="is_completed != True" />
+                                            </group>
+                                        </group>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter reload_on_post="True" />
+            </form>
+        </field>
+    </record>
+
+
+    <record id="todo_app_todo_view_search" model="ir.ui.view">
+        <field name="name">todo_app.todo_app.view.search</field>
+        <field name="model">todo_app.todo_app</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <field name="description" />
+                <field name="category_id" />
+                <field name="user_id" />
+                <separator />
+                <field name="date_deadline" />
+                <field name="create_date" />
+                <separator />
+                <filter string="Archived" domain="[('active', '=', False)]" name="filter_archived" />
+                <filter string="Completed" domain="[('is_complete', '=', True)]" name="filter_completed" />
+                <filter string="My Todos" domain="[('user_id', '=', uid)]" name="filter_my_todos" />
+                <filter string="Create Date" name="filter_creation_date" date="create_date" default_period="month" />
+                <filter string="Date Deadline" name="filter_date_deadline" date="date_deadline" default_period="month" />
+                <group>
+                    <filter name="group_create_uid" string="Created By" context="{'group_by': 'create_uid'}" />
+                    <filter name="group_date" string="Deadline" context="{'group_by': 'date_deadline'}" />
+                    <filter name="group_category_id" string="Category" context="{'group_by': 'category_id'}" />
+                    <filter name="group_user_id" string="User Id" context="{'group_by': 'user_id'}" />
+                    <filter name="group_states" string="States" context="{'group_by': 'states'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="todo_app_action_todo" model="ir.actions.act_window">
+        <field name="name">Todo</field>
+        <field name="res_model">todo_app.todo_app</field>
+        <field name="view_mode">kanban,list,form,calendar,pivot,graph,activity</field>
+        <field name="context">{
+            'default_description':'Write something about the app in short'
+            } </field>
+        <field name="search_view_id" ref="todo_app.todo_app_todo_view_search" />
+    </record>
+
+    <record id="todo_app_action_todo_complete" model="ir.actions.act_window">
+        <field name="name">Todo</field>
+        <field name="res_model">todo_app.todo_app</field>
+        <field name="view_mode">kanban,list,form,calendar,pivot,graph,activity</field>
+        <field name="context">{ 'default_description':'Write something about the app in short'} </field>
+        <field name="domain">[('is_complete','=', True)]</field>
+        <field name="search_view_id" ref="todo_app.todo_app_todo_view_search" />
+    </record>
+
+    <record id="todo_app_action_todo_incomplete" model="ir.actions.act_window">
+        <field name="name">Incomplete Todo</field>
+        <field name="res_model">todo_app.todo_app</field>
+        <field name="view_mode">kanban,list,form,calendar,pivot,graph,activity</field>
+        <field name="context">{ 'default_description':'Write something about the app in short'} </field>
+        <field name="domain">[('is_complete','=', False)]</field>
+        <field name="search_view_id" ref="todo_app.todo_app_todo_view_search" />
+    </record>
+
+</odoo>
+
+
+<!-- 'search_default_group_states': True,
+            'search_default_filter_my_todos':True, -->

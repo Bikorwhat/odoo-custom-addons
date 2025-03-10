@@ -1,0 +1,31 @@
+<odoo>
+<data>
+    <record id="view_todo_wizard_form" model="ir.ui.view">
+        <field name="name">todo.wizard.form</field>
+        <field name="model">todo.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Confirm Todo">
+                <group>
+                    <field name="name" readonly="1"/>
+                    <field name="description" readonly="1"/>
+                    <field name="description_html" readonly="1"/>
+                    <field name="category_id" readonly="1"/>
+                    <field name="tag_ids" readonly="1"/>
+                    <field name="user_id" readonly="1"/>
+                </group>
+                <footer>
+                    <button name="action_confirm_create_todo" string="Confirm" type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="todo_wizard_action" model="ir.actions.act_window">
+        <field name="name">Confirm Todo</field>
+        <field name="res_model">todo.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+    </data>
+</odoo>

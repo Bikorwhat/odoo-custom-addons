@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Form View -->
+    <record id="todo_app_ext_view_form" model="ir.ui.view">
+        <field name="name">todo_app_ext.view_form</field>
+        <field name="model">todo_app_ext.todo.followups</field>
+        <field name="arch" type="xml">
+            <form string="Todo Follow-Up">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="sequence"/>
+                        <field name="date_deadline"/>
+                        <field name="date_completed"/>
+                        <field name="assigned_to"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- List View -->
+    <record id="todo_app_ext_view_list" model="ir.ui.view">
+        <field name="name">todo_app_ext.view_list</field>
+        <field name="model">todo_app_ext.todo.followups</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence"/>
+                <field name="name"/>
+                <field name="date_deadline"/>
+                <field name="date_completed"/>
+                <field name="assigned_to"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_todo_followup" model="ir.actions.act_window">
+        <field name="name">Todo Follow-ups</field>
+        <field name="res_model">todo_app_ext.todo.followups</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p>Create and manage todo follow-ups</p>
+        </field>
+    </record>
+
+    <!-- Menus -->
+    <menuitem id="menu_todo_followup" name="Follow-Up" sequence="1"/>
+    <menuitem id="submenu_todo_followup" name="Followup" parent="menu_todo_followup" action="action_todo_followup" sequence="1"/>
+</odoo>

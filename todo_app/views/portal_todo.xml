@@ -1,0 +1,14 @@
+<odoo>
+    <template id="portal_my_home" name="Todos" inherit_id="portal.portal_my_home"
+        customize_show="True">
+        <xpath expr="//div[@id='portal_common_category']" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Your Todos</t>
+                <t t-set="url" t-value="'/my/todo'" />
+                <t t-set="text">View your Todos</t>
+                <t t-set="placeholder_count" t-value="'todos_count'" />
+                <t t-set="show_count" t-value="True" />
+            </t>
+        </xpath>
+    </template>
+</odoo>

@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+todo_app_ext.access_todo_app_ext_todo_followups,access_todo_app_ext_todo_followups,todo_app_ext.model_todo_app_ext_todo_followups,base.group_user,1,1,1,1

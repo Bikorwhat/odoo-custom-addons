@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="helpdesk_report_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Helpdesk Report</h2>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Team</th>
+                                    <th>Team Leader</th>
+                                    <th>Assigned Member</th>
+                                    <th>Reported Date</th>
+                                    <th>Current Stage</th>
+                                    <th>Type</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="doc.get_helpdesk_data()" t-as="ticket">
+                                    <tr>
+                                        <td>
+                                            <span t-field="ticket.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="ticket.team_id.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="ticket.team_id.leader_id.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="ticket.assigned_user_id.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="ticket.create_date"/>
+                                        </td>
+                                        <td>
+                                            <!-- Display the ticket stage (Draft, In Progress, Completed, or Cancelled) -->
+                                            <span t-field="ticket.stage_id.name"/>
+                                        </td>
+                                        <td>
+                                            <!-- Display the ticket type -->
+                                            <span t-field="ticket.type"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

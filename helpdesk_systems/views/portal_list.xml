@@ -1,0 +1,20 @@
+<odoo>
+    <template id="ticket_submission_success" name="Ticket Submission Success">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <h2 class="text-center text-success">Success!</h2>
+                <p class="text-center">
+                    <t t-esc="message"/>
+                </p>
+                <p class="text-center">Your Ticket ID: <strong>
+                    <t t-esc="ticket_id"/>
+                </strong>
+            </p>
+            <div class="text-center mt-3">
+                <a href="/" class="btn btn-primary">Go to Homepage</a>
+                <a href="/helpdesk/submit" class="btn btn-secondary">Submit Another Ticket</a>
+            </div>
+        </div>
+    </t>
+</template>
+</odoo>

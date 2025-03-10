@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<odoo>
+    <!--
+        todo_app.tag views
+    -->
+    <record id="todo_app_tag_view_form" model="ir.ui.view">
+        <field name="name">todo_app.stage.view.form</field>
+        <field name="model">todo_app.stage</field>
+        <field name="arch" type="xml">
+            <form string="Stage">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" />
+                        <h1>
+                            <field name="name" placeholder="e.g. Stage" />
+                        </h1>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="todo_app_stage_view_tree" model="ir.ui.view">
+        <field name="name">todo_app.stage.view.list</field>
+        <field name="model">todo_app.stage</field>
+        <field name="arch" type="xml">
+            <list string="Stage" editable="bottom" sample="1">
+                <field name="name" />
+            </list>
+        </field>
+    </record>
+
+    <record id="todo_app_stage_action" model="ir.actions.act_window">
+        <field name="name">Stage</field>
+        <field name="res_model">todo_app.stage</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="todo_app_stage_view_tree" />
+    </record>
+</odoo>

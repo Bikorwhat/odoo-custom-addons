@@ -1,0 +1,16 @@
+<odoo>
+    <data>
+        <!-- Extending the Form View of Helpdesk System -->
+        <record id="helpdesk_bridge_helpdesk_systems_form" model="ir.ui.view">
+            <field name="name">helpdesk.bridge.helpdesk_systems.form</field>
+            <field name="model">helpdesk_systems.helpdesk_systems</field>
+            <field name="inherit_id" ref="helpdesk_systems.helpdesk_systems_view_helpdesk_systems_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button name="action_create_todo_from_ticket" string="Create Todo" type="object" class="btn-primary" invisible="not is_draft  or type == 'external'"/>
+                    <button name="action_create_crm_lead" type="object" string="Create CRM Lead" class="btn-primary" invisible="not is_draft or type == 'internal'"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

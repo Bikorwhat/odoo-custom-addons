@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Define Stages -->
+    <record model="helpdesk_system.stage" id="stage_draft">
+        <field name="name">Draft</field>
+        <field name="sequence">1</field>
+    </record>
+
+    <record model="helpdesk_system.stage" id="stage_in_progress">
+        <field name="name">In Progress</field>
+        <field name="sequence">2</field>
+    </record>
+
+    <record model="helpdesk_system.stage" id="stage_completed">
+        <field name="name">Completed</field>
+        <field name="sequence">3</field>
+    </record>
+
+    <record model="helpdesk_system.stage" id="stage_cancelled">
+        <field name="name">Cancelled</field>
+        <field name="sequence">4</field>
+    </record>
+
+    <record id="helpdesk_systems_stage_action" model="ir.actions.act_window">
+        <field name="name">Helpdesk Stages</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">helpdesk_system.stage</field>
+        <field name="view_mode">list,form,kanban</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_sm">
+                Define different stages for managing the helpdesk system.
+            </p>
+        </field>
+    </record>
+
+</odoo>

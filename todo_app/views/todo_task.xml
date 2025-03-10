@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="todo_app_task_view_list" model="ir.ui.view">
+        <field name="name">todo_app.todo_task.view.list</field>
+        <field name="model">todo_app.todo_task</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+                <field name="date_deadline" />
+                <field name="is_completed" />
+                <field name="user_id" string="Assigned To" />
+                <field name="todo_app_id" string="Todo" />
+            </list>
+        </field>
+    </record>
+
+    <record id="todo_app_task_view_kanban" model="ir.ui.view">
+        <field name="name">todo_app.todo_task.view.kanban</field>
+        <field name="model">todo_app.todo_task</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="name" />
+                <field name="date_deadline" />
+                <field name="user_id" />
+                <field name="is_completed" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card">
+                            <div class="oe_kanban_details">
+                                <strong>
+                                    <t t-esc="record.name.raw_value" />
+                                </strong>
+                                <strong>
+                                    <field name="user_id" />
+                                </strong>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="todo_app_task_view_form" model="ir.ui.view">
+        <field name="name">todo_app.todo_task.view.form</field>
+        <field name="model">todo_app.todo_task</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="%(todo_app.action_open_remark_wizard)d"
+                        string="Task Complete" invisible="is_completed == True"
+                        type="action" class="btn-primary" />
+                </header>
+                <sheet>
+                    <field name="is_completed" invisible="1" />
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Task Name" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="date_deadline" />
+                            <field name="user_id" string="Assigned To" />
+                            <field name="sequence" />
+                        </group>
+                        <group>
+                            <field name="is_completed" readonly="1" />
+                            <field name="todo_app_id" string="Todo" />
+                            <field name="description" />
+                            <field name="remarks" readonly="1"
+                                invisible="is_completed != True" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="todo_app_task_view_search" model="ir.ui.view">
+        <field name="name">todo_app.todo_task.view.search</field>
+        <field name="model">todo_app.todo_task</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <field name="description" />
+                <field name="user_id" />
+                <field name="date_deadline" />
+                <filter string="Completed" domain="[('is_completed', '=', True)]"
+                    name="filter_completed" />
+                <filter string="My Tasks" domain="[('user_id', '=', uid)]" name="filter_my_tasks" />
+                <group>
+                    <filter name="group_user_id" string="Assigned To"
+                        context="{'group_by': 'user_id'}" />
+                    <filter name="group_date" string="Deadline"
+                        context="{'group_by': 'date_deadline'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="todo_app_action_task" model="ir.actions.act_window">
+        <field name="name">Todo Tasks</field>
+        <field name="res_model">todo_app.todo_task</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="search_view_id" ref="todo_app_task_view_search" />
+    </record>
+
+</odoo>

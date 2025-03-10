@@ -1,0 +1,29 @@
+<odoo>
+    <data>
+        <!-- Root Menu Item -->
+        <menuitem id="helpdesk_systems_menu_helpdesk_systems_root" name="Helpdesk System" sequence="10" groups="helpdesk_systems.group_helpdesk_member,helpdesk_systems.group_helpdesk_leader,helpdesk_systems.group_helpdesk_admin"/>
+
+        <!-- Helpdesk Menu -->
+        <menuitem id="helpdesk_systems_menu_helpdesk_systems" name="Helpdesk" parent="helpdesk_systems_menu_helpdesk_systems_root" action="helpdesk_systems_action_helpdesk_systems" groups="helpdesk_systems.group_helpdesk_member,helpdesk_systems.group_helpdesk_leader,helpdesk_systems.group_helpdesk_admin"/>
+        <menuitem id="helpdesk_systems_menu_report" name="Report" parent="helpdesk_systems_menu_helpdesk_systems_root" action="action_report_helpdesk_wizard" groups="helpdesk_systems.group_helpdesk_member,helpdesk_systems.group_helpdesk_leader,helpdesk_systems.group_helpdesk_admin"/>
+
+
+        <!-- Configuration Menu -->
+        <menuitem id="helpdesk_systems_menu_configuration_helpdesk_systems" name="Configuration" parent="helpdesk_systems_menu_helpdesk_systems_root" groups="helpdesk_systems.group_helpdesk_leader,helpdesk_systems.group_helpdesk_admin"/>
+
+        <!-- Category Menu under Configuration -->
+        <menuitem id="helpdesk_systems_menu_category_helpdesk_systems" name="Category" parent="helpdesk_systems_menu_configuration_helpdesk_systems" action="helpdesk_systems_action_helpdesk_category" sequence="2" groups="helpdesk_systems.group_helpdesk_leader,helpdesk_systems.group_helpdesk_admin"/>
+
+        <!-- Tags Menu under Configuration -->
+        <menuitem id="helpdesk_systems_menu_tags_helpdesk_systems" name="Tags" parent="helpdesk_systems_menu_configuration_helpdesk_systems" action="helpdesk_systems_tag_action" sequence="1" groups="helpdesk_systems.group_helpdesk_leader,helpdesk_systems.group_helpdesk_admin"/>
+
+        <!-- Types Menu under Configuration -->
+        <menuitem id="helpdesk_systems_menu_types_helpdesk_systems" name="Types" parent="helpdesk_systems_menu_configuration_helpdesk_systems" action="helpdesk_systems_action_helpdesk_types" sequence="3" groups="helpdesk_systems.group_helpdesk_leader,helpdesk_systems.group_helpdesk_admin"/>
+
+        <!-- Helpdesk Teams Menu under Configuration -->
+        <menuitem id="helpdesk_team_menu" name="Helpdesk Teams" parent="helpdesk_systems_menu_configuration_helpdesk_systems" action="helpdesk_team_action" groups="helpdesk_systems.group_helpdesk_leader,helpdesk_systems.group_helpdesk_admin"/>
+
+        <!-- Helpdesk Stages Menu under Configuration -->
+        <menuitem id="helpdesk_system_stage_menu" name="Helpdesk Stages" action="helpdesk_systems_stage_action" parent="helpdesk_systems_menu_configuration_helpdesk_systems" groups="helpdesk_systems.group_helpdesk_leader,helpdesk_systems.group_helpdesk_admin"/>
+    </data>
+</odoo>
