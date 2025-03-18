@@ -49,6 +49,13 @@ class CrmWizard(models.TransientModel):
         if self.ticket_id:
             self.ticket_id.crm_lead_id = crm_lead.id
             _logger.info(f"Linked CRM Lead ID: {crm_lead.id} to Ticket ID: {self.ticket_id.id}")
+         
+        # if existing_partner:
+        #     message = f"Lead created for contact: {existing_partner.name} ({existing_partner.email})"
+        # else:
+        #     message = f"Lead created for non-contact user: {self.email}"
+
+        # crm_lead.message_post(body=message)
 
         return {
              'type': 'ir.actions.act_window_close', 

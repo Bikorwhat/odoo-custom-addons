@@ -67,12 +67,25 @@ class HelpdeskSystems(models.Model):
     _description = 'Helpdesk System'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    name = fields.Char(string="Name", required=True, tracking=True)
+    # name = fields.Char(string="Name", required=True, tracking=True)
+    name = fields.Char(
+        string="Name",
+        required=True, copy=False, readonly=False,
+        index='trigram',
+        default=lambda self: _('New'))
+    # company_id = fields.Many2one(
+    #     comodel_name='res.company',
+    #     required=True, index=True,
+    #     default=lambda self: self.env.company)
+    
+   
+
+
     email = fields.Char(string="Email", tracking=True)
     number = fields.Char(string="Number", tracking=True)
     query = fields.Text("Query", tracking=True,required=True)
     description = fields.Text("Brief Description", tracking=True)
-    reported_date = fields.Date("Reported Date", tracking=True,required=True)
+    reported_date = fields.Date("Reported Date", tracking=True)
     @api.constrains('reported_date')
     def _limitDate(self):
         for record in self:
@@ -83,16 +96,14 @@ class HelpdeskSystems(models.Model):
         ('internal', 'Internal'),
         ('external', 'External')],
          string="Type", tracking=True,required=True)
-    reported_by = fields.Many2one('res.users', string="Reported By", tracking=True,required=True)
+    reported_by = fields.Many2one(
+    'res.users', 
+    string="Reported By", 
+    tracking=True, 
+    required=True, 
+    default=lambda self: self.env.user
+)
     
-    @api.model
-    def create(self, values):
-        """ Override create to set the reported_by field to the logged-in user (admin) """
-        if not values.get('reported_by'):  # If reported_by is not provided, set it to the logged-in user
-            values['reported_by'] = self.env.user.id  # Assign the current user (admin)
-        
-        # Proceed with the creation of the record
-        return super(HelpdeskSystems, self).create(values)
     team_id = fields.Many2one('helpdesk.team', string="Assigned Team", tracking=True)
       # Add the Many2one field for category
     category_id = fields.Many2one(
@@ -225,6 +236,7 @@ class HelpdeskSystems(models.Model):
             }
         }
 
+
     def action_send_to_cancel(self):
         """ Set stage to 'Cancelled' """
         cancelled_stage = self.env['helpdesk_system.stage'].search([('name', '=', 'Cancelled')], limit=1)
@@ -249,13 +261,19 @@ class HelpdeskSystems(models.Model):
         if self.stage_id and self.stage_id.name == 'Cancelled' and draft_stage:
             self.stage_id = draft_stage
     
-    @api.model
-    def create(self, values):
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('name', _("New")) == _("New"):
+                vals['name'] = self.env['ir.sequence'].next_by_code(
+                    'helpdesk_systems.helpdesk_systems') or _("New")
         """ Override create to send notification when ticket is created """
-        ticket = super(HelpdeskSystems, self).create(values)
+        ticket = super(HelpdeskSystems, self).create(vals_list)
          # Debugging: Print team leader ID when a team is assigned
         if ticket.team_id:
          print("Assigned Team Leader ID: ", ticket.team_id.leader_id.name)
+       
+        ticket._send_creation_notifications()
 
         ticket._send_assignment_notifications()
         return ticket
@@ -269,6 +287,46 @@ class HelpdeskSystems(models.Model):
         if 'assigned_user_id' in values:  # Check if assigned user was updated
             self._send_assignment_notifications()
         return result
+    def _send_creation_notifications(self):
+        """ Sends notifications to all team leaders and admins when a ticket is created """
+        # Notify all team leaders
+        team_leader_group = self.env.ref('helpdesk_systems.group_helpdesk_leader').sudo()  # Team leader group
+        team_leaders = team_leader_group.users.sudo()
+        team_leader_partner_ids = []
+
+        # Check if the ticket is from a contact or non-contact user
+        # Collect partner IDs of team leaders
+        for leader in team_leaders:
+            if leader.partner_id:
+                team_leader_partner_ids.append(leader.partner_id.id)
+
+        # Notify team leaders
+        if team_leader_partner_ids:
+            self.message_post(
+                body=f"A new Help Desk ticket has been created from the portal: {self.name}",
+                partner_ids=team_leader_partner_ids,
+                message_type='notification',
+                subtype_xmlid='mail.mt_comment',
+            )
+
+        # Notify admins (users in the 'Administrator' group)
+        admin_group = self.env.ref('helpdesk_systems.group_helpdesk_admin').sudo()  # Admin group
+        admins = admin_group.users.sudo()
+        admin_partner_ids = []
+
+        # Collect partner IDs of admins
+        for admin in admins:
+            if admin.partner_id:
+                admin_partner_ids.append(admin.partner_id.id)
+
+        # Notify admins
+        if admin_partner_ids:
+            self.message_post(
+                body=f"A new Help Desk ticket has been created from the portal: {self.name}",
+                partner_ids=admin_partner_ids,
+                message_type='notification',
+                subtype_xmlid='mail.mt_comment',
+            )
 
     def _send_assignment_notifications(self):
         """ Sends notifications to assigned user and team leader """

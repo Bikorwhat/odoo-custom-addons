@@ -5,6 +5,8 @@ from datetime import timedelta
 
 from random import randint
 
+from odoo.tools.convert import datetime
+
 class TodoApp(models.Model):
     _name = 'todo_app.todo_app'
     _inherit = ['mail.thread','mail.activity.mixin']
@@ -21,14 +23,19 @@ class TodoApp(models.Model):
     name = fields.Char(string="Name", required=True,tracking=True)
     description = fields.Text("Brief Description",tracking=True)
     description_html = fields.Html("Full Description",tracking=True)
+    helpdesk_ticket_id = fields.Many2one(
+        'helpdesk_systems.helpdesk_systems', 
+        string="Related Helpdesk Ticket"
+    )
     date_deadline = fields.Date("Deadline",tracking=True)
     active = fields.Boolean('Active', default=True)
     category_id = fields.Many2one("todo_app.todo_category", string="Category", ondelete="set null",tracking=True)
     is_complete = fields.Boolean("Is Complete", compute="_compute_is_complete", store=True)
     user_id = fields.Many2one('res.users', string="Assigned To" ,tracking=True)
+    manager_id = fields.Many2one('res.users', string="Manager", tracking=True)
     task_ids = fields.One2many('todo_app.todo_task', 'todo_app_id', string="Tasks")
     progress = fields.Float(string="Progress (%)", compute="_compute_is_complete", store=True,tracking=True)
-    stage_id = fields.Many2one('todo_app.stage', string='Stages', required=True, group_expand='_read_group_stage_id', tracking=True)
+    stage_id = fields.Many2one('todo_app.stage', string='Stages', group_expand='_read_group_stage_id', tracking=True)
     template_id = fields.Many2one('todo_app.template',string='Templates')
     tag_ids = fields.Many2many(
         'todo_app.tag', 'todo_app_todo_todo_tag_rel' , column1='todo_id',column2='tag_id',string='Tags',tracking=True)
@@ -54,6 +61,28 @@ class TodoApp(models.Model):
     _sql_constraints = [
         ('name_uniq', 'unique (name)', "Todo name already exists!"),
     ]
+    @api.model
+    def send_deadline_notifications(self):
+        today = datetime.now().date()
+        notification_days = int(
+            self.env['ir.config_parameter'].sudo().get_param(
+                'todo_app.notification_days_before_deadline', default=0
+            )
+        )
+        if notification_days > 0:
+            deadline_date = today + timedelta(days=notification_days)
+            tasks = self.search([
+                ('date_deadline', '=', deadline_date),
+                ('states', '!=', 'completed')
+            ])
+            
+            for task in tasks:
+                if task.user_id and task.user_id.partner_id:
+                    message = f"Task '{task.name}' is due in {notification_days} days."
+                    task.message_post(
+                        body=message,
+                        partner_ids=[task.user_id.partner_id.id]  
+                    )
     
     @api.depends('task_ids')
     def _compute_total_tasks(self):
@@ -149,15 +178,7 @@ class TodoApp(models.Model):
             sequence +=1
         self.task_ids = tasks_data
         
-    @api.model
-    def _notify_date_deadline(self):
-        print("Notifying the users about the date deadline")
-        todos = self.search([])
-        for rec in todos:
-            rec.message_post(
-                body=("Notifying the users about the date deadline"),
-                patner_ids=rec.user_id.partner_id.ids
-            )
+
     
     @api.model
     def _read_group_stage_id(self, records, domain, order=None):

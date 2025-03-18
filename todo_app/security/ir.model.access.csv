@@ -7,7 +7,7 @@ todo_app.access_todo_app_tag,access_todo_app_tag,todo_app.model_todo_app_tag,bas
 todo_app.access_todo_app_stage,access_todo_app_stage,todo_app.model_todo_app_stage,base.group_user,1,0,0,0
 todo_app.access_todo_app_template,access_todo_app_template,todo_app.model_todo_app_template,base.group_user,1,0,0,0
 todo_app.access_todo_app_template_task,access_todo_app_template_task,todo_app.model_todo_app_template_task,base.group_user,1,0,0,0
-
+todo_app.access_todo_app_task,access_todo_app_task,todo_app.model_todo_app_task,base.group_user,1,0,0,0
 
 todo_app.access_todo_app_todo_app_user,access_todo_app_todo_app,todo_app.model_todo_app_todo_app,todo_app.group_todo_user,1,0,0,0
 todo_app.access_todo_app_todo_category_user,access_todo_app_todo_category,todo_app.model_todo_app_todo_category,todo_app.group_todo_user,1,0,0,0
@@ -17,6 +17,8 @@ todo_app.access_todo_app_tag_user,access_todo_app_tag,todo_app.model_todo_app_ta
 todo_app.access_todo_app_stage_user,access_todo_app_stage,todo_app.model_todo_app_stage,todo_app.group_todo_user,1,0,0,0
 todo_app.access_todo_app_template_user,access_todo_app_template,todo_app.model_todo_app_template,todo_app.group_todo_user,1,0,0,0
 todo_app.access_todo_app_template_task_user,access_todo_app_template_task,todo_app.model_todo_app_template_task,todo_app.group_todo_user,1,0,0,0
+todo_app.access_todo_app_task_user,access_todo_app_task,todo_app.model_todo_app_task,todo_app.group_todo_user,1,0,0,0
+
 
 todo_app.access_todo_app_todo_app_manager,access_todo_app_todo_app,todo_app.model_todo_app_todo_app,todo_app.group_todo_manager,1,1,1,0
 todo_app.access_todo_app_todo_category_manager,access_todo_app_todo_category,todo_app.model_todo_app_todo_category,todo_app.group_todo_manager,1,1,1,0
@@ -26,6 +28,8 @@ todo_app.access_todo_app_tag_manager,access_todo_app_tag,todo_app.model_todo_app
 todo_app.access_todo_app_stage_manager,access_todo_app_stage,todo_app.model_todo_app_stage,todo_app.group_todo_manager,1,1,1,0
 todo_app.access_todo_app_template_manager,access_todo_app_template,todo_app.model_todo_app_template,todo_app.group_todo_manager,1,1,1,0
 todo_app.access_todo_app_template_task_manager,access_todo_app_template_task,todo_app.model_todo_app_template_task,todo_app.group_todo_manager,1,1,1,0
+todo_app.access_todo_app_task_manager,access_todo_app_task,todo_app.model_todo_app_task,todo_app.group_todo_manager,1,1,1,0
+
 
 todo_app.access_todo_app_todo_app_admin,access_todo_app_todo_app,todo_app.model_todo_app_todo_app,todo_app.group_todo_admin,1,1,1,1
 todo_app.access_todo_app_todo_category_admin,access_todo_app_todo_category,todo_app.model_todo_app_todo_category,todo_app.group_todo_admin,1,1,1,1
@@ -35,4 +39,5 @@ todo_app.access_todo_app_tag_admin,access_todo_app_tag,todo_app.model_todo_app_t
 todo_app.access_todo_app_stage_admin,access_todo_app_stage,todo_app.model_todo_app_stage,todo_app.group_todo_admin,1,1,1,1
 todo_app.access_todo_app_template_admin,access_todo_app_template,todo_app.model_todo_app_template,todo_app.group_todo_admin,1,1,1,1
 todo_app.access_todo_app_template_task_admin,access_todo_app_template_task,todo_app.model_todo_app_template_task,todo_app.group_todo_admin,1,1,1,1
+todo_app.access_todo_app_task_admin,access_todo_app_task,todo_app.model_todo_app_task,todo_app.group_todo_admin,1,1,1,1
 

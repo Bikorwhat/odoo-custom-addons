@@ -62,4 +62,10 @@
         parent="submenu_configuration_list"
         action="todo_app.todo_template_action_todo"
         sequence="5" />
+    <menuitem id="submenu_todo_settings"
+     name="Settings" parent="submenu_configuration_list" 
+     action="todo_app.todo_app_config_settings_action"
+     sequence="6"/>
+
+
 </odoo>

@@ -62,7 +62,7 @@ class HelpdeskBridge(models.Model):
                 'default_name': ticket.name,
                 'default_description': ticket.query,
                 'default_description_html': ticket.description,
-                # 'default_user_id': team_leader_id,
+                'default_leader_id': team_leader_id,
                 'default_user_id': ticket.assigned_user_id.id if ticket.assigned_user_id else False,
 
                 'default_category_id': todo_category.id if todo_category else False,

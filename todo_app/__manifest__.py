@@ -18,41 +18,38 @@ Long description of module's purpose
 
     # any module necessary for this one to work correctly
     'depends': ['base',
-                'mail',"portal","web",'helpdesk_systems'
+                'mail',"portal","website",'helpdesk_systems'
                 ],
 
     # always loaded
     'data': [
         'security/ir_rules.xml',
         'security/ir.model.access.csv',
-        
         'report/ir_actions_report_templates.xml',
         'report/ir_actions_report.xml',
-        
-        
+        'data/cron_jobs.xml',
         'data/todo_data.xml',
-        'data/corn_jobs.xml',
         'data/mail_template.xml',
-        
         'wizard/todo_remark_view.xml',
-        
         'views/todo.xml',
         'views/todo_category.xml',
         'views/todo_task.xml',
         'views/todo_tag_view.xml',
+        'views/settings_view.xml', 
         'views/todo_stage_view.xml',
         'views/todo_task_template.xml',
-        'views/todo_menu_views.xml',
         'views/portal_todo.xml',
-        
-        
+        'views/todo_menu_views.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',
     ],
+    
     'installable': True,
     'application': True,  
-    'auto_install': False, 
+    'auto_install': False,
+     'icon': '/todo_app/static/description/icon.png', 
+
 }
 

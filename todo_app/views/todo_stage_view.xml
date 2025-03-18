@@ -1,39 +1,41 @@
-<?xml version="1.0"?>
-<odoo>
-    <!--
-        todo_app.tag views
-    -->
-    <record id="todo_app_tag_view_form" model="ir.ui.view">
-        <field name="name">todo_app.stage.view.form</field>
-        <field name="model">todo_app.stage</field>
-        <field name="arch" type="xml">
-            <form string="Stage">
-                <sheet>
-                    <div class="oe_title">
-                        <label for="name" />
-                        <h1>
-                            <field name="name" placeholder="e.g. Stage" />
-                        </h1>
-                    </div>
-                </sheet>
-            </form>
-        </field>
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Define Stages -->
+    <record model="todo_app.stage" id="stage_draft">
+        <field name="name">Draft</field>
+        <field name="sequence">1</field>
     </record>
 
-    <record id="todo_app_stage_view_tree" model="ir.ui.view">
-        <field name="name">todo_app.stage.view.list</field>
-        <field name="model">todo_app.stage</field>
-        <field name="arch" type="xml">
-            <list string="Stage" editable="bottom" sample="1">
-                <field name="name" />
-            </list>
-        </field>
+    <record model="todo_app.stage" id="stage_assigned">
+        <field name="name">Assigned</field>
+        <field name="sequence">2</field>
+    </record>
+
+    <record model="todo_app.stage" id="stage_in_progress">
+        <field name="name">In Progress</field>
+        <field name="sequence">3</field>
+    </record>
+
+    <record model="todo_app.stage" id="stage_completed">
+        <field name="name">Completed</field>
+        <field name="sequence">4</field>
+    </record>
+
+    <record model="todo_app.stage" id="stage_cancelled">
+        <field name="name">Cancelled</field>
+        <field name="sequence">5</field>
     </record>
 
     <record id="todo_app_stage_action" model="ir.actions.act_window">
-        <field name="name">Stage</field>
+        <field name="name">TodoApp Stages</field>
+        <field name="type">ir.actions.act_window</field>
         <field name="res_model">todo_app.stage</field>
-        <field name="view_mode">list,form</field>
-        <field name="view_id" ref="todo_app_stage_view_tree" />
+        <field name="view_mode">list,form,kanban</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_sm">
+                Define different stages for managing the todoapp system.
+            </p>
+        </field>
     </record>
+
 </odoo>

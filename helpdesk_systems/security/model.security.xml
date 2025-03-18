@@ -22,7 +22,7 @@
         <record id="group_helpdesk_member" model="res.groups">
             <field name="name">Member: Own Ticket Only</field>
             <field name="category_id" ref="category_helpdesk_systems_roles" />
-            <field name="implied_ids" eval="[(4, ref('helpdesk_systems.group_helpdesk_member'))]" />
+            <!-- <field name="implied_ids" eval="[(4, ref('helpdesk_systems.group_helpdesk_member'))]" /> -->
             <field name="comment">The member will have access to their own tickets in the Helpdesk application.</field>
         </record>
 

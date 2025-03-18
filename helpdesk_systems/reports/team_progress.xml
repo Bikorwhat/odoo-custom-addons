@@ -5,7 +5,13 @@
             <t t-foreach="docs" t-as="doc">
                 <t t-call="web.external_layout">
                     <div class="page">
-                        <h2>Team Progress Report</h2>
+                        <t t-if="doc.date_from and doc.date_to">
+                            <h2>Team Progress Report</h2>
+                            <strong>From:</strong>
+                            <span t-field="doc.date_from"/>
+                            <strong>To:</strong>
+                            <span t-field="doc.date_to"/>
+                        </t>
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
@@ -19,7 +25,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                             <t t-foreach="doc.get_team_progress_data()" t-as="team">
+                                <t t-foreach="doc.get_team_progress_data()" t-as="team">
                                     <tr>
                                         <td>
                                             <span t-esc="team['name']"/>

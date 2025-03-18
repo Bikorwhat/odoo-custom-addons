@@ -47,15 +47,14 @@
           <sheet>
             <group>
               <group>
-                <field name="name"/>
+                <field name="name" readonly="1"/>
+                <!-- <field name="company_id" options="{'no_create': True}"/> -->
                 <field name="description"/>
                 <field name="query"/>
                 <field name="type"/>
                 <field name="email"/>
                 <field name="number"/>
-
                 <field name="tags" widget="many2many_tags"/>
-
               </group>
               <group>
                 <field name="category_id" options="{'no_create':True,'no_create_edit':True}"/>

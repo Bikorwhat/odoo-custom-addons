@@ -6,7 +6,7 @@
         <form string="Create CRM Lead">
             <sheet>
                 <group>
-                    <field name="name" required="1"/>
+                    <field name="name" required="1" readonly="1"/>
                     <field name="email" readonly="1"/>
                     <field name="phone" readonly="1"/>
                 </group>

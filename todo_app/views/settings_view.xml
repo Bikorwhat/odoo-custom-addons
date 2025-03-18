@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Integrate Todo Notification Settings into General Settings -->
+    <record id="view_todo_notification_settings_form" model="ir.ui.view">
+        <field name="name">todo_app.notification.settings.form</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app string="Todo" name="todo_app">
+                    <block title="Todo Deadline Reminder">
+                        <setting>
+                            <div class="content-group">
+                                <div class="row mt8">
+                                    <label class="col-lg-3" string="Notify Days Before Deadline" for="notification_days_before_deadline"/>
+                                    <field name="notification_days_before_deadline"/>
+                                </div>
+                            </div>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+    <!-- Action to Open Settings -->
+
+    <record id="todo_app_config_settings_action" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_id" ref="view_todo_notification_settings_form"/>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module' : 'todo_app', 'bin_size': False}</field>
+    </record>
+</odoo>

@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 
 class HelpdeskReportWizard(models.TransientModel):
     _name = 'helpdesk.report.wizard'
@@ -6,6 +7,12 @@ class HelpdeskReportWizard(models.TransientModel):
 
     date_from = fields.Date(string="Date From", required=True)
     date_to = fields.Date(string="Date To", required=True)
+    
+    @api.constrains('date_from', 'date_to')
+    def _check_dates(self):
+        if self.date_from > self.date_to:
+            raise ValidationError("Date From cannot be greater than Date To")
+    
     report_type = fields.Selection([
         ('brief_data', 'Brief Data'),
         ('team_progress', 'Team Progress Data')

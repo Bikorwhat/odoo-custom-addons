@@ -1,0 +1,7 @@
+<odoo>
+    <template id="custom_container_button" inherit_id="website.header_call_to_action">
+        <xpath expr="//a[@href='/contactus']" position="after">
+            <a href="/helpdesk/submit" class="oe_unremovable btn btn-primary btn_cta">Send Query</a>
+        </xpath>
+    </template>
+</odoo> 

@@ -18,26 +18,28 @@ Long description of module's purpose
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','portal','mail'],
+    'depends': ['base','mail','portal','website'],
 
     # always loaded
     'data': [
-          'security/ir.model.access.csv',
         'security/model.security.xml',
+        'security/ir.model.access.csv',
         'data/stage_data.xml',
+        'data/ir_sequence_data.xml',
         'wizard/stage_wizard.xml',
         'views/report.xml',
+        'views/web_button.xml',
         'views/views.xml',
         'views/category.xml',
         'views/helpdesk_team_views.xml',
-         'views/portal_list.xml',
+        'views/portal_list.xml',
         'views/type.xml',
         'views/tag.xml',
-        'views/menu.xml',
         'views/portal_templates.xml',
         'reports/ir_actions_report_template.xml',
         'reports/ir_actions_report.xml',
-          'reports/team_progress.xml',
+        'reports/team_progress.xml',
+        'views/menu.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
