@@ -8,27 +8,27 @@
                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                 <div class="form-group">
                     <label for="name">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" />
+                    <input type="email" class="form-control" id="email" name="email" required="required"/>
                 </div>
                 <div class="form-group">
                     <label for="name">Number</label>
                    
-                    <input type="text" class="form-control" id="number" name="number"/>
+                    <input type="text" class="form-control" id="number" name="number" required="required"/>
                 </div>
 
                     <div class="form-group">    
                         <label for="name">Ticket Title</label>
-                        <input type="text" class="form-control" id="name" name="name" />
+                        <input type="text" class="form-control" id="name" name="name" required="required"/>
                     </div>
 
                     <div class="form-group">
                         <label for="query">Query</label>
-                        <input type="text" class="form-control" id="query" name="query" />
+                        <input type="text" class="form-control" id="query" name="query" required="required"/>
                     </div>
 
                     <div class="form-group">
                         <label for="description">Description</label>
-                        <textarea class="form-control" id="description" name="description" rows="4"></textarea>
+                        <textarea class="form-control" id="description" name="description" rows="4" required="required"></textarea>
                     </div>
 
                   

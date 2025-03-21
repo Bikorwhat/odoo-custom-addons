@@ -39,40 +39,33 @@ class CRMLead(models.Model):
         })
 
     def action_set_won(self):
-        """ Override the won action to auto-fill the contact or create a customer if not found. """
         res = super(CRMLead, self).action_set_won()
         for lead in self:
             if not lead.partner_id:  # Only proceed if no customer is linked
-                partner = lead._find_matching_partner()
+                partner = lead._find_partner()
                 if not partner:
                     partner = lead._create_customer()
                 lead.partner_id = partner.id  # Link the found or created partner
         return res
 
-    def _find_matching_partner(self):
+    def _find_partner(self):
         """ Find a matching partner in res.partner using email and name, then fallback to email-only, then name-only. """
         self.ensure_one()
         Partner = self.env['res.partner']
         
-        # 1. Check by both email and name
-        if self.email_from and self.partner_name:
-            partner = Partner.search([('email', '=', self.email_from), ('name', 'ilike', self.partner_name)], limit=1)
+        if self.email_from and self.contact_name:
+            partner = Partner.search([('email', '=', self.email_from), ('name', 'ilike', self.contact_name)], limit=1)
             if partner:
                 return partner
-
-        # 2. Check by email only
         if self.email_from:
             partner = Partner.search([('email', '=', self.email_from)], limit=1)
             if partner:
                 return partner
-
-        # 3. Check by name only
-        if self.partner_name:
-            partner = Partner.search([('name', 'ilike', self.partner_name)], limit=1)
+        if self.contact_name:
+            partner = Partner.search([('name', 'ilike', self.contact_name)], limit=1)
             if partner:
                 return partner
-
-        return None  # No matching partner found
+        return None  
 
     def _create_customer(self):
         """ Create a new customer and return the partner record. """

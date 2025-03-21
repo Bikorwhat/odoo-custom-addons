@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "crm_ext",
+    'name': "sales ext",
 
-    'summary': "crm autoamtion",
+    'summary': "Short (1 phrase/line) summary of the sales's purpose",
 
     'description': """
 Long description of module's purpose
@@ -18,16 +18,17 @@ Long description of module's purpose
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','crm'],
+    'depends': ['sale'],
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
-        'data/crm_stage_data.xml',
-        'views/crm_lead_views.xml',
+        'security/ir.model.access.csv',
+        'wizard/wizard.xml',
+        'views/sales_ext_view.xml',
     ],
+    # only loaded in demonstration mode
+    'application': True,  # ✅ Important! Ensures it appears in Apps menu
     'installable': True,
     'auto_install': False,
-    'application': False,
 }
 

@@ -2,6 +2,6 @@
 <odoo noupdate='0'>
     <record model="crm.stage" id="stage_lead5" forcecreate="False">
         <field name="name">Lost</field>
-        <field name="sequence">80</field>
+        <field name="sequence">100</field>
     </record>
 </odoo>

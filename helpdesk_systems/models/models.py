@@ -2,65 +2,6 @@ from odoo import SUPERUSER_ID, api, models, fields
 from odoo.exceptions import ValidationError
 from odoo.osv.expression import date
 from odoo.tools import _
-
-class HelpdeskTeam(models.Model):
-    _name = 'helpdesk.team' 
-    _description = 'Helpdesk Team'
-
-    name = fields.Char("Team Name", required=True)
-    leader_id = fields.Many2one('res.users', string="Team Leader", required=True)
-    member_ids = fields.Many2many('res.users', string="Team Members")
-    
-    @api.constrains('leader_id')
-    def _check_leader_is_member(self):
-        for team in self:
-            if team.leader_id and team.leader_id not in team.member_ids:
-                raise models.ValidationError("The team leader must be a member of the team.")
-    @api.model
-    def create(self, values):
-        # Create the team first
-        team = super(HelpdeskTeam, self).create(values)
-
-        # Ensure the leader and members are added to the group
-        self._add_users_to_group(team)
-
-        return team
-
-    def _add_users_to_group(self, team):
-        # Define the groups (or create new ones if needed)
-        team_leader_group = self.env.ref('helpdesk_systems.group_helpdesk_leader', raise_if_not_found=False)
-        team_member_group = self.env.ref('helpdesk_systems.group_helpdesk_member', raise_if_not_found=False)
-
-        if team_leader_group:
-            team_leader_group.users = [(4, team.leader_id.id)]  # Add the team leader to the leader group
-
-        if team_member_group:
-            for member in team.member_ids:
-                team_member_group.users = [(4, member.id)]  # Add each team member to the member group
-
-    
-class HelpdeskRemarks(models.Model):
-    _name = 'helpdesk.remarks'
-    _description = 'Helpdesk Remarks'
-
-    helpdesk_ticket_id = fields.Many2one('helpdesk_systems.helpdesk_systems', string="Helpdesk Ticket", ondelete='cascade')
-    name = fields.Char("Ticket Name")
-    team_id = fields.Many2one('helpdesk.team', string="Assigned Team")
-    remarks = fields.Text("Remarks")
-    document = fields.Binary("Upload Document")
-    
-
-
-class HelpdeskStage(models.Model):
-    _name = 'helpdesk_system.stage'
-    _description = 'Helpdesk Stage'
-    
-    name = fields.Char("Stage Name", required=True)
-    sequence = fields.Integer("Sequence", default=1)
-    _sql_constraints=[
-        ('name_unique' , 'unique(name)', 'Stage Name must be unique'),
-    ]
-    
     
 class HelpdeskSystems(models.Model):
     _name = 'helpdesk_systems.helpdesk_systems'
@@ -72,7 +13,7 @@ class HelpdeskSystems(models.Model):
         string="Name",
         required=True, copy=False, readonly=False,
         index='trigram',
-        default=lambda self: _('New'))
+        default=lambda self: ('New'))
     # company_id = fields.Many2one(
     #     comodel_name='res.company',
     #     required=True, index=True,
@@ -264,9 +205,9 @@ class HelpdeskSystems(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
-            if vals.get('name', _("New")) == _("New"):
+            if vals.get('name', "New") == "New":
                 vals['name'] = self.env['ir.sequence'].next_by_code(
-                    'helpdesk_systems.helpdesk_systems') or _("New")
+                    'helpdesk_systems.helpdesk_systems') or ("New")
         """ Override create to send notification when ticket is created """
         ticket = super(HelpdeskSystems, self).create(vals_list)
          # Debugging: Print team leader ID when a team is assigned
